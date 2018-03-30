@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <br>
+    <div class="newitem" style="text-align:center">
+        <form action = "{{ url_for('add') }}" method="POST">
+            <strong>Add a new task</strong>
+            <input type="text" name="taskitem">
+            <input type="submit" value="Add New Task">
+        </form>
+    </div>
+    <div class="row">
+      <div class="column" id="todo">
+        <h2>To-Do</h2>
+        <hr>
+        <div class="input-area">
+          <ul>
+            {% for task in tasks_todo %}
+                <li>{{ task.taskName }}</li>
+                <a href="{{ url_for('progress', id=task.taskId) }}">Send to Progress</a>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="column" id="progress">
+        <h2>In Progress</h2>
+        <hr>
+        <div class="input-area">
+            <ul>
+              {% for task in tasks_progress %}
+                  <li>{{ task.taskName }}</li>
+                  <a href="{{ url_for('done', id=task.taskId) }}">Mark as Done</a>
+              {% endfor %}
+            </ul>
+        </div>
+      </div>
+      <div class="column" id="done">
+        <h2>Done</h2>
+        <hr>
+        <div class="input-area">
+            <ul>
+              {% for task in tasks_done %}
+                  <li>{{ task.taskName }}</li>
+              {% endfor %}
+            </ul>
+        </div>
+        <div class="button">
+            <a href="{{ url_for('delete') }}" class="button">Delete Tasks</a>
+        </div>
+      </div>
+    </div>
+{% endblock %}

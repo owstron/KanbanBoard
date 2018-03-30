@@ -1,0 +1,30 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Kanban Board</title>
+      {% else %}
+      <title>Welcome to Kanban Board</title>
+      {% endif %}
+    </head>
+    <div>
+        Kanban Board:
+        <a href="{{ url_for('index') }}">Home</a>
+        {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </div>
+    <body>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
