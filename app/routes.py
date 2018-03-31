@@ -24,18 +24,16 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        print("Valid")
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('index'))
-    else:
-        print("Not Valid")
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -60,6 +58,7 @@ def register():
 
 
 @app.route('/add', methods=['POST'])
+@login_required
 def add():
     task = Task(taskName=request.form['taskitem'], taskStatus='ToDo', userId = current_user.id)
     db.session.add(task)
@@ -68,6 +67,7 @@ def add():
 
 
 @app.route('/progress/<id>')
+@login_required
 def progress(id):
     task = Task.query.filter_by(taskId = int(id)).first()
     task.taskStatus = 'Progress'
@@ -76,6 +76,7 @@ def progress(id):
 
 
 @app.route('/done/<id>')
+@login_required
 def done(id):
     task = Task.query.filter_by(taskId = int(id)).first()
     task.taskStatus = 'Done'
@@ -84,6 +85,7 @@ def done(id):
 
 
 @app.route('/delete')
+@login_required
 def delete():
     tasks = Task.query.filter_by(taskStatus='Done')
     for task in tasks:
