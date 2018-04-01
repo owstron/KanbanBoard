@@ -1,5 +1,5 @@
 body {
-  background-color: white;
+  background-color: #FAFAFA;
   font-family: "Open Sans", sans-serif;
   padding: 5px 25px;
   font-size: 18px;
@@ -66,7 +66,8 @@ ul {
 .task-item {
     border: 2px solid black;
     border-radius: 5px;
-    width: 80%
+    width: 80%;
+    margin-bottom: 2px;
 }
 
 
@@ -135,4 +136,65 @@ ul {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
+}
+
+/* Buttons*/
+.btn {
+  border: 2px solid transparent;
+  background: #3498DB;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 25px;
+  padding: 10px 0;
+  text-decoration: none;
+  text-shadow: none;
+  border-radius: 3px;
+  box-shadow: none;
+  transition: 0.25s;
+  display: block;
+  width: 250px;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.btn:hover {
+  background-color: #2980B9;
+}
+
+
+
+/* Add Form */
+.login-form {
+text-align: center;
+}
+.control-group {
+margin-bottom: 10px;
+}
+
+form {
+    border-radius: 3px;
+    border: 2px solid;
+    width: 30%;
+    margin: auto;
+}
+
+input {
+	text-align: center;
+	background-color: white;
+	border: 2px solid;
+	border-radius: 3px;
+	font-size: 16px;
+	font-weight: 200;
+	padding: 10px;
+	width: 250px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+	transition: border .5s;
+}
+
+input:focus {
+border: 2px solid #3498DB;
+box-shadow: none;
 }

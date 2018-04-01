@@ -94,7 +94,7 @@ class BasicTests(unittest.TestCase):
     #########################
     def test_delete_without_login(self):
         '''Test delete page access leads to login page if not logged in'''
-        response = self.client.get('/delete', follow_redirects=True)
+        response = self.client.get('/delete_all', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Sign In - Kanban Board', response.data)
 
@@ -190,18 +190,19 @@ class BasicTests(unittest.TestCase):
         self.assertIn(b'Invalid username or password', response.data)
 
 
+
     ########################
     ######## Test pages after login
     ########################
-    def test_valid_login(self):
+
+    def logout(self):
+        '''Testing logout'''
         with self.client:
-            response = self.client.post(
-                '/login',
-                data=dict(email='nikesh@email.com', password='FlaskIsAwesome', remember_me = False),
-                follow_redirects=True
-            )
+            resp_login = self.login_test_user()
+            response = self.client.get('/logout', follow_redirects=True)
             self.assertEqual(response.status_code, 200)
-            self.assertIn(b'Welcome', response.data)
+            self.assertIn(b'Sign In - KanbanBoard', response.data)
+
 
     def test_add(self):
         '''Testing adding new item'''
@@ -211,8 +212,6 @@ class BasicTests(unittest.TestCase):
                         data=dict(taskitem='CS162'),
                         follow_redirects=True)
             task = Task.query.filter_by(taskName='CS162').first()
-            print("\n\n\n\n")
-            print(task)
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'CS162', response.data)
             self.assertEqual(task.taskName, 'CS162')
@@ -228,7 +227,59 @@ class BasicTests(unittest.TestCase):
                         follow_redirects=True)
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'Mark as Done', response.data)
+            task = Task.query.filter_by(taskName='CS162').first()
+            self.assertEqual(task.taskStatus, 'Progress')
 
+    def test_move_to_done(self):
+        '''Test moving already saved stuff to done'''
+        with self.client:
+            resp_login = self.login_test_user()
+            response2 = self.client.post('/add',
+                        data=dict(taskitem='CS162'),
+                        follow_redirects=True)
+            response = self.client.get('/done/1',
+                        follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            task = Task.query.filter_by(taskName='CS162').first()
+            self.assertEqual(task.taskStatus, 'Done')
+
+    def test_move_to_todo(self):
+        '''Test moving already saved stuff to ToDo from other place'''
+        with self.client:
+            resp_login = self.login_test_user()
+            response2 = self.client.post('/add',
+                        data=dict(taskitem='CS162'),
+                        follow_redirects=True)
+            # Moving the task to Done Board
+            response_done = self.client.get('/done/1',
+                        follow_redirects=True)
+            task = Task.query.filter_by(taskName='CS162').first()
+            self.assertEqual(task.taskStatus, 'Done')
+            # Moving back to ToDo
+            response = self.client.get('/todo/1',
+                        follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            task = Task.query.filter_by(taskName='CS162').first()
+            self.assertEqual(task.taskStatus, 'ToDo')
+
+    def test_delete(self):
+        with self.client:
+            resp_login = self.login_test_user()
+            # adding the task first
+            response_add = self.client.post('/add',
+                        data=dict(taskitem='CS162'),
+                        follow_redirects=True)
+
+            # Querying the task for checking existence
+            task = Task.query.filter_by(taskName='CS162').first()
+            self.assertEqual(task.taskName, 'CS162')
+
+            # Deleteing the task
+            response = self.client.get('/delete/1',
+                        follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            task = Task.query.filter_by(taskName='CS162').first()
+            self.assertEqual(task, None)
 
 
 if __name__ == "__main__":

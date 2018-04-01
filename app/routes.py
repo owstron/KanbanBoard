@@ -67,13 +67,13 @@ def add():
     db.session.commit()
     return redirect(url_for('index'))
 
-# @app.route('/todo/<id>')
-# @login_required
-# def progress(id):
-#     task = Task.query.filter_by(taskId = int(id)).first()
-#     task.taskStatus = 'ToDo'
-#     db.session.commit()
-#     return redirect(url_for('index'))
+@app.route('/todo/<id>')
+@login_required
+def todo(id):
+    task = Task.query.filter_by(taskId = int(id)).first()
+    task.taskStatus = 'ToDo'
+    db.session.commit()
+    return redirect(url_for('index'))
 
 @app.route('/progress/<id>')
 @login_required
@@ -99,5 +99,14 @@ def delete_all():
     tasks = Task.query.filter_by(taskStatus='Done')
     for task in tasks:
         db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/delete/<id>')
+@login_required
+def delete(id):
+    task = Task.query.filter_by(taskId = int(id)).first()
+    db.session.delete(task)
     db.session.commit()
     return redirect(url_for('index'))

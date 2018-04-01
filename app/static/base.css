@@ -1,0 +1,31 @@
+body {
+    margin: auto;
+}
+
+.log-btn {
+  border: 2px solid transparent;
+  background: #3498DB;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 25px;
+  padding: 10px 0;
+  text-decoration: none;
+  text-shadow: none;
+  border-radius: 3px;
+  box-shadow: none;
+  transition: 0.25s;
+  display: block;
+  width: 80px;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.log-btn:hover {
+  background-color: #2980B9;
+}
+
+.messages {
+    color: red;
+}

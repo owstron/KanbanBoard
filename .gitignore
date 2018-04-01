@@ -100,4 +100,6 @@ ENV/
 # mypy
 .mypy_cache/
 
+# Other files
 .DS_Store
+kanban.db

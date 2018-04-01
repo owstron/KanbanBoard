@@ -1,5 +1,6 @@
-{% extends "base.html" %} {% block content %}
-<br>
+{% extends "base.html" %}
+{% block content %}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='index.css') }}">
 <div class="newitem" style="text-align:center">
     <form action="{{ url_for('add') }}" method="POST">
         <strong>Add a new task</strong>
@@ -20,7 +21,7 @@
                               <div class="dropdown-content">
                                 <a href="{{ url_for('progress', id=task.taskId) }}">Send to Progress</a>
                                 <a href="{{ url_for('done', id=task.taskId) }}">Mark as Done</a>
-                                <a href="#">Delete</a>
+                                <a href="{{ url_for('delete', id=task.taskId) }}">Delete</a>
                               </div>
                             </div>
                         </li>
@@ -39,8 +40,8 @@
                               <button class="dropbtn progress">{{ task.taskName }}</button>
                               <div class="dropdown-content">
                                 <a href="{{ url_for('done', id=task.taskId) }}">Mark as Done</a>
-                                <a href="{{ url_for('progress', id=task.taskId) }}">Send back to To Do</a>
-                                <a href="#">Delete</a>
+                                <a href="{{ url_for('todo', id=task.taskId) }}">Move back to ToDo</a>
+                                <a href="{{ url_for('delete', id=task.taskId) }}">Delete</a>
                               </div>
                             </div>
                         </li>
@@ -58,8 +59,8 @@
                             <div class="dropdown task-item">
                               <button class="dropbtn done">{{ task.taskName }}</button>
                               <div class="dropdown-content">
-                                <a href="#">Delete</a>
-                                <a href="{{ url_for('done', id=task.taskId) }}">Move back to ToDo</a>
+                                <a href="{{ url_for('delete', id=task.taskId) }}">Delete</a>
+                                <a href="{{ url_for('progress', id=task.taskId) }}">Move back to ToDo</a>
                               </div>
                             </div>
                         </li>
@@ -67,7 +68,7 @@
                 </ul>
             </div>
             <div class="button">
-                <a href="{{ url_for('delete_all') }}" class="button">Delete All Done Tasks</a>
+                <a href="{{ url_for('delete_all') }}" class="button btn">Delete All Done Tasks</a>
             </div>
         </div>
     </div>

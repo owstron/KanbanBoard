@@ -1,31 +1,38 @@
 <html>
     <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       {% if title %}
       <title>{{ title }} - Kanban Board</title>
       {% else %}
       <title>Welcome to Kanban Board</title>
       {% endif %}
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='index.css') }}">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='base.css') }}">
     </head>
     <div>
-        Kanban Board:
-        <a href="{{ url_for('index') }}">Home</a>
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('login') }}">Login</a>
-        {% else %}
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% endif %}
+        <div style="float:right;">
+            {% if current_user.is_anonymous %}
+                <a href="{{ url_for('login') }}" class="button log-btn">Login</a>
+            {% else %}
+                <a href="{{ url_for('logout') }}" class="button log-btn">Logout</a>
+            {% endif %}
+        </div>
+        <div style="text-align: center;">
+            <h1>Kanban Board</h1>
+        <div/>
     </div>
     <body>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+        <div class="messages">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            </div>
+            {% block content %}
+            {% endblock %}
     </body>
 </html>
