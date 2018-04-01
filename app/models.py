@@ -1,7 +1,7 @@
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 import bcrypt
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -24,6 +24,14 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.passwordHash, password + self.passwordSalt)
 
+
+class Anonymous(AnonymousUserMixin):
+  def __init__(self):
+    self.firstName = 'Guest'
+    self.lastName = 'Atithi'
+    self.email = 'guest@email.com'
+
+login.anonymous_user = Anonymous
 
 @login.user_loader
 def load_user(id):
