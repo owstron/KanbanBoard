@@ -1,52 +1,74 @@
-{% extends "base.html" %}
-
-{% block content %}
-    <br>
-    <div class="newitem" style="text-align:center">
-        <form action = "{{ url_for('add') }}" method="POST">
-            <strong>Add a new task</strong>
-            <input type="text" name="taskitem">
-            <input type="submit" value="Add New Task">
-        </form>
-    </div>
-    <div class="row">
-      <div class="column" id="todo">
-        <h2>To-Do</h2>
-        <hr>
-        <div class="input-area">
-          <ul>
-            {% for task in tasks_todo %}
-                <li>{{ task.taskName }}</li>
-                <a href="{{ url_for('progress', id=task.taskId) }}">Send to Progress</a>
-            {% endfor %}
-          </ul>
+{% extends "base.html" %} {% block content %}
+<br>
+<div class="newitem" style="text-align:center">
+    <form action="{{ url_for('add') }}" method="POST">
+        <strong>Add a new task</strong>
+        <input type="text" name="taskitem">
+        <input type="submit" value="Add New Task">
+    </form>
+</div>
+    <div class="container">
+        <div class="column-left" id="todo">
+            <h2>To-Do</h2>
+            <hr>
+            <div class="input-area">
+                <ul>
+                    {% for task in tasks_todo %}
+                        <li>
+                            <div class="dropdown task-item todo">
+                              <button class="dropbtn todo">{{ task.taskName }}</button>
+                              <div class="dropdown-content">
+                                <a href="{{ url_for('progress', id=task.taskId) }}">Send to Progress</a>
+                                <a href="{{ url_for('done', id=task.taskId) }}">Mark as Done</a>
+                                <a href="#">Delete</a>
+                              </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-      </div>
-      <div class="column" id="progress">
-        <h2>In Progress</h2>
-        <hr>
-        <div class="input-area">
-            <ul>
-              {% for task in tasks_progress %}
-                  <li>{{ task.taskName }}</li>
-                  <a href="{{ url_for('done', id=task.taskId) }}">Mark as Done</a>
-              {% endfor %}
-            </ul>
+        <div class="column-center" id="progress">
+            <h2>In Progress</h2>
+            <hr>
+            <div class="input-area">
+                <ul>
+                    {% for task in tasks_progress %}
+                        <li>
+                            <div class="dropdown task-item progress">
+                              <button class="dropbtn progress">{{ task.taskName }}</button>
+                              <div class="dropdown-content">
+                                <a href="{{ url_for('done', id=task.taskId) }}">Mark as Done</a>
+                                <a href="{{ url_for('progress', id=task.taskId) }}">Send back to To Do</a>
+                                <a href="#">Delete</a>
+                              </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-      </div>
-      <div class="column" id="done">
-        <h2>Done</h2>
-        <hr>
-        <div class="input-area">
-            <ul>
-              {% for task in tasks_done %}
-                  <li>{{ task.taskName }}</li>
-              {% endfor %}
-            </ul>
+        <div class="column-right" id="done">
+            <h2>Done</h2>
+            <hr>
+            <div class="input-area">
+                <ul>
+                    {% for task in tasks_done %}
+                        <li>
+                            <div class="dropdown task-item">
+                              <button class="dropbtn done">{{ task.taskName }}</button>
+                              <div class="dropdown-content">
+                                <a href="#">Delete</a>
+                                <a href="{{ url_for('done', id=task.taskId) }}">Move back to ToDo</a>
+                              </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="button">
+                <a href="{{ url_for('delete_all') }}" class="button">Delete All Done Tasks</a>
+            </div>
         </div>
-        <div class="button">
-            <a href="{{ url_for('delete') }}" class="button">Delete Tasks</a>
-        </div>
-      </div>
     </div>
 {% endblock %}

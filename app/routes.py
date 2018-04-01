@@ -57,17 +57,23 @@ def register():
             db.session.commit()
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('login'))
-        # return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-
 @app.route('/add', methods=['POST'])
+@login_required
 def add():
     task = Task(taskName=request.form['taskitem'], taskStatus='ToDo', userId = current_user.id)
     db.session.add(task)
     db.session.commit()
     return redirect(url_for('index'))
 
+# @app.route('/todo/<id>')
+# @login_required
+# def progress(id):
+#     task = Task.query.filter_by(taskId = int(id)).first()
+#     task.taskStatus = 'ToDo'
+#     db.session.commit()
+#     return redirect(url_for('index'))
 
 @app.route('/progress/<id>')
 @login_required
@@ -87,9 +93,9 @@ def done(id):
     return redirect(url_for('index'))
 
 
-@app.route('/delete')
+@app.route('/delete_all')
 @login_required
-def delete():
+def delete_all():
     tasks = Task.query.filter_by(taskStatus='Done')
     for task in tasks:
         db.session.delete(task)
