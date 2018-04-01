@@ -102,5 +102,3 @@ ENV/
 
 # Other files
 .DS_Store
-kanban.db
-migrations/
