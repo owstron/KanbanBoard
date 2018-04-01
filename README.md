@@ -16,7 +16,6 @@ The `flask db init` commands gives `alembic.util.exc.CommandError: Directory mig
 It can be neglected as we have to create an empty `kanban.db` since it is not uploaded with the package.
 ```
 $ export FLASK_APP=kanban.py
-$ rm kanban.db
 $ flask db init
 $ flask db migrate
 $ flask db upgrade
