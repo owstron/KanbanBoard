@@ -10,18 +10,13 @@ $ python3.6 -m venv .venv
 $ source .venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
-** To prepare the database and run the app **
-The `flask db init` commands gives `alembic.util.exc.CommandError: Directory migrations already exists` error.
-
-It can be neglected as we have to create an empty `kanban.db` since it is not uploaded with the package.
+** To run the app **
 ```
 $ export FLASK_APP=kanban.py
-$ flask db init
-$ flask db migrate
-$ flask db upgrade
 $ flask run
-
 ```
+
+There are not default users, so please start by creating a new user. :blush:
 
 ### How to run unit tests?
 The unit tests are in `./app/tests/` folder.
