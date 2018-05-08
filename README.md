@@ -16,7 +16,7 @@ $ export FLASK_APP=kanban.py
 $ flask run
 ```
 
-There are not default users, so please start by creating a new user. :blush:
+There are no default users, so please start by creating a new user. :blush:
 
 ### How to run unit tests?
 The unit tests are in `./app/tests/` folder.
