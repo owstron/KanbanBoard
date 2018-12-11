@@ -1,6 +1,6 @@
 # KanbanBoard
 
-This app is available at <https://www.github.com/nik1997/kanbanboard>
+This webapp is available at <https://nikeshshrestha.pythonanywhere.com/>
 
 ## How to use this app?
 ### Follow the following commands:
