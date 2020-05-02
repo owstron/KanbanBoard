@@ -13,6 +13,7 @@ def index():
     tasks_progress = []
     tasks_done = []
     if current_user.is_authenticated:
+        # get task only if the users is authenticated
         tasks_todo = Task.query.filter_by(taskStatus='ToDo').filter_by(userId = current_user.id)
         tasks_progress = Task.query.filter_by(taskStatus='Progress').filter_by(userId = current_user.id)
         tasks_done = Task.query.filter_by(taskStatus='Done').filter_by(userId = current_user.id)
@@ -20,8 +21,14 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    '''
+        Allows users to login
+    '''
     if current_user.is_authenticated:
+        # re-route users to homepage, if authenticated
         return redirect(url_for('index'))
+
+    # present a login form to allow users to log-in
     form = LoginForm()
     if request.method == "POST":
         if form.validate_on_submit():
@@ -43,11 +50,17 @@ def logout():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    '''
+        Registers a new user to the system.
+    '''
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+    
+    # registration form
     form = RegistrationForm()
     if request.method == "POST":
         if form.validate_on_submit():
+            # register new user only after validation
             user = User(firstName=form.firstName.data,
                 lastName=form.lastName.data,
                 email=form.email.data,
@@ -62,6 +75,9 @@ def register():
 @app.route('/add', methods=['POST'])
 @login_required
 def add():
+    '''
+        Allows to add-in new tasks
+    '''
     task = Task(taskName=request.form['taskitem'], taskStatus='ToDo', userId = current_user.id)
     db.session.add(task)
     db.session.commit()
@@ -70,6 +86,9 @@ def add():
 @app.route('/todo/<id>')
 @login_required
 def todo(id):
+    '''
+        Moves a given task to Todo column
+    '''
     task = Task.query.filter_by(taskId = int(id)).first()
     task.taskStatus = 'ToDo'
     db.session.commit()
@@ -78,6 +97,9 @@ def todo(id):
 @app.route('/progress/<id>')
 @login_required
 def progress(id):
+    '''
+        Moves a given task to Progress column
+    '''
     task = Task.query.filter_by(taskId = int(id)).first()
     task.taskStatus = 'Progress'
     db.session.commit()
@@ -87,6 +109,9 @@ def progress(id):
 @app.route('/done/<id>')
 @login_required
 def done(id):
+    '''
+        Moves a given task to done column
+    '''
     task = Task.query.filter_by(taskId = int(id)).first()
     task.taskStatus = 'Done'
     db.session.commit()
@@ -96,6 +121,9 @@ def done(id):
 @app.route('/delete_all')
 @login_required
 def delete_all():
+    '''
+        Delete all the tasks in Done column (That are already completed)
+    '''
     tasks = Task.query.filter_by(taskStatus='Done')
     for task in tasks:
         db.session.delete(task)
@@ -106,6 +134,9 @@ def delete_all():
 @app.route('/delete/<id>')
 @login_required
 def delete(id):
+    '''
+        Delete a given task from any column
+    '''
     task = Task.query.filter_by(taskId = int(id)).first()
     db.session.delete(task)
     db.session.commit()
